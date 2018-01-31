@@ -1,0 +1,25 @@
+{
+  "name": "h3tech/yii2-simplePay",
+  "type": "yii2-extension",
+  "description": "An easy to use SimplePay SDK extension for Yii",
+  "homepage": "https://github.com/H3Tech/yii2-simplePay",
+  "keywords": [
+    "yii2",
+    "extension",
+    "simplepay"
+  ],
+  "license": "GPL-3.0-only",
+  "autoload": {
+    "psr-4": {
+      "h3tech\\simplePay\\": ""
+    }
+  },
+  "authors": [
+    {
+      "name": "Gyula Szabó",
+      "email": "gt.szgyula@gmail.com",
+      "homepage": "https://github.com/gyula-szabo"
+    }
+  ],
+  "minimum-stability": "stable"
+}
