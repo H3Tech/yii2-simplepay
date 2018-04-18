@@ -21,5 +21,8 @@
       "homepage": "https://github.com/gyula-szabo"
     }
   ],
-  "minimum-stability": "stable"
+  "minimum-stability": "stable",
+  "extra": {
+    "bootstrap": "h3tech\\simplePay\\Bootstrap"
+  }
 }
