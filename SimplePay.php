@@ -42,7 +42,15 @@ class SimplePay extends Component
             }
         }
 
-        $this->config = $config;
+        $this->config = array_merge([
+            'SANDBOX' => true,
+            'PROTOCOL' => 'http',
+            'CURL' => true,
+            'GET_DATA' => $_GET,
+            'POST_DATA' => $_POST,
+            'SERVER_DATA' => $_SERVER,
+            'LOGGER' => false,
+        ], $config);
     }
 
     public function createLiveUpdate($currency = '', array $config = null)
