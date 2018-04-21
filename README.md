@@ -29,35 +29,27 @@ The component must be enabled in Yii's configuration by adding an entry for it i
 'components' => [
     'simplePay' => [
         'class' => 'h3tech\simplePay\SimplePay',
-        'config' => [
-            'HUF_MERCHANT' => '<MERCHANT_ID>',
-            'HUF_SECRET_KEY' => '<SECRET_KEY>',
-            'SANDBOX' => true,
-
-            'BACK_REF' => $_SERVER['HTTP_HOST'] . '/backref.php',
-            'TIMEOUT_URL' => $_SERVER['HTTP_HOST'] . '/timeout.php',
-            'IRN_BACK_URL' => $_SERVER['HTTP_HOST'] . '/irn.php',
-            'IDN_BACK_URL' => $_SERVER['HTTP_HOST'] . '/idn.php',
-            'IOS_BACK_URL' => $_SERVER['HTTP_HOST'] . '/ios.php',
-
-            'GET_DATA' => $_GET,
-            'POST_DATA' => $_POST,
-            'SERVER_DATA' => $_SERVER,
-
-            'LOGGER' => false,
+        'sdkConfig' => [
+            'EUR_MERCHANT' => '<MERCHANT_ID>',
+            'EUR_SECRET_KEY' => '<SECRET_KEY>',
+            'BACK_REF' => ['/order/status'],
+            'TIMEOUT_URL' => ['/order/status'],
         ],
+        'defaultPaymentPageLanguage' => 'HU',
     ],
 ],
 ```
 
-Please refer to the [SimplePay SDK documentation](http://simplepartner.hu/download.php?target=dochu) for more information on how to configure the SDK.
+Please refer to the [SimplePay SDK documentation](http://simplepartner.hu/download.php?target=dochu) for more information on how to configure the SDK.  
+For URL configuration (e.g. BACK_REF, TIMEOUT_URL) you can use a Yii style route which will be processed by a Url::to() call.
 
 You can use the component for example the following way:
 ```php
 $ipn = Yii::$app->get('simplePay')->createIpn();
 
 if ($ipn->validateReceived()) {
-    echo 'IPN request is valid';
+    // TODO: finalize order
+    echo $ipn->confirmReceived();
 } else {
     echo 'IPN request is not valid';
 }
@@ -70,7 +62,8 @@ $config = Yii::$app->params['simplePayConfig'];
 $ipn = new SimpleIpn($config);
 
 if ($ipn->validateReceived()) {
-    echo 'IPN request is valid';
+    // TODO: finalize order
+    echo $ipn->confirmReceived();
 } else {
     echo 'IPN request is not valid';
 }

@@ -15,22 +15,29 @@ use h3tech\simplePay\sdk\SimpleIrn;
 use yii\helpers\Url;
 
 /**
- * @property array $config
+ * @property array $sdkConfig
+ * @property array $defaultPaymentPageLanguage
+ * @property array $defaultPaymentMethod
  */
 class SimplePay extends Component
 {
-    protected $config;
+    const SUPPORTED_LANGUAGES = ['CZ', 'DE', 'EN', 'IT', 'HR', 'HU', 'PL', 'RO', 'SK'];
+    const SUPPORTED_PAYMENT_METHODS = ['CCVISAMC', 'WIRE'];
 
-    public function getConfig()
+    protected $sdkConfig;
+    protected $defaultPaymentPageLanguage = 'EN';
+    protected $defaultPaymentMethod = 'CCVISAMC';
+
+    public function getSdkConfig()
     {
-        return $this->config;
+        return $this->sdkConfig;
     }
 
     /**
      * @param $config
      * @throws InvalidConfigException
      */
-    public function setConfig(array $config)
+    public function setSdkConfig(array $config)
     {
         if (!is_array($config)) {
             throw new InvalidConfigException('The options property must be any array');
@@ -42,7 +49,7 @@ class SimplePay extends Component
             }
         }
 
-        $this->config = array_merge([
+        $this->sdkConfig = array_merge([
             'SANDBOX' => true,
             'PROTOCOL' => 'http',
             'CURL' => true,
@@ -51,6 +58,44 @@ class SimplePay extends Component
             'SERVER_DATA' => $_SERVER,
             'LOGGER' => false,
         ], $config);
+    }
+
+    public function getDefaultPaymentPageLanguage()
+    {
+        return $this->defaultPaymentPageLanguage;
+    }
+
+    public function setDefaultPaymentPageLanguage($paymentPageLanguage)
+    {
+        $paymentPageLanguage = strtoupper($paymentPageLanguage);
+
+        if (!in_array($paymentPageLanguage, static::SUPPORTED_LANGUAGES)) {
+            throw new InvalidConfigException(
+                'The default payment page language property must have a valid value from the following: '
+                . join(', ', static::SUPPORTED_LANGUAGES)
+            );
+        }
+
+        $this->defaultPaymentPageLanguage = $paymentPageLanguage;
+    }
+
+    public function getDefaultPaymentMethod()
+    {
+        return $this->defaultPaymentMethod;
+    }
+
+    public function setDefaultPaymentMethod($paymentMethod)
+    {
+        $paymentMethod = strtoupper($paymentMethod);
+
+        if (!in_array($paymentMethod, static::SUPPORTED_PAYMENT_METHODS)) {
+            throw new InvalidConfigException(
+                'The default payment method property must have a valid value from the following: '
+                . join(', ', static::SUPPORTED_PAYMENT_METHODS)
+            );
+        }
+
+        $this->defaultPaymentMethod = $paymentMethod;
     }
 
     public function createLiveUpdate($currency = '', array $config = null)
@@ -91,12 +136,18 @@ class SimplePay extends Component
         $backref->order_ref = isset($parameters['order_ref']) ? $parameters['order_ref'] : 'N/A';
 
         if (isset($parameters['err'])) {
-            $result = $parameters['err'];
+            $result = ['error' => $parameters['err']];
         } else {
             $backref->checkResponse();
             $result = $backref->backStatusArray;
         }
 
         return $result;
+    }
+
+    public function getValidPaymentPageLanguage($language)
+    {
+        $language = strtoupper($language);
+        return in_array($language, static::SUPPORTED_LANGUAGES) ? $language : $this->defaultPaymentPageLanguage;
     }
 }
