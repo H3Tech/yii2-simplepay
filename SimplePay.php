@@ -100,32 +100,32 @@ class SimplePay extends Component
 
     public function createLiveUpdate($currency = '', array $config = null)
     {
-        return new SimpleLiveUpdate(is_array($config) ? $config : $this->config, $currency);
+        return new SimpleLiveUpdate(is_array($config) ? $config : $this->sdkConfig, $currency);
     }
 
     public function createBackRef($currency = '', array $config = null)
     {
-        return new SimpleBackRef(is_array($config) ? $config : $this->config, $currency);
+        return new SimpleBackRef(is_array($config) ? $config : $this->sdkConfig, $currency);
     }
 
     public function createIos($currency = '', $orderNumber = 'N/A', array $config = null)
     {
-        return new SimpleIos(is_array($config) ? $config : $this->config, $currency, $orderNumber);
+        return new SimpleIos(is_array($config) ? $config : $this->sdkConfig, $currency, $orderNumber);
     }
 
     public function createIpn($currency = '', array $config = null)
     {
-        return new SimpleIpn(is_array($config) ? $config : $this->config, $currency);
+        return new SimpleIpn(is_array($config) ? $config : $this->sdkConfig, $currency);
     }
 
     public function createIdn($currency = '', array $config = null)
     {
-        return new SimpleIdn(is_array($config) ? $config : $this->config, $currency);
+        return new SimpleIdn(is_array($config) ? $config : $this->sdkConfig, $currency);
     }
 
     public function createIrn($currency = '', array $config = null)
     {
-        return new SimpleIrn(is_array($config) ? $config : $this->config, $currency);
+        return new SimpleIrn(is_array($config) ? $config : $this->sdkConfig, $currency);
     }
 
     /** @return string|array */
