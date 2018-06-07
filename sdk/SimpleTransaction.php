@@ -79,7 +79,6 @@ class SimpleTransaction extends SimpleBase
         }
         if (!$this->curl) {
             //XML content
-            die('fuckit');
             $this->debugMessage[] = 'SEND WAY: file_get_contents';
             if (in_array("libxml", get_loaded_extensions())) {
                 $options = array(
