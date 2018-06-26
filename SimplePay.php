@@ -51,6 +51,7 @@ class SimplePay extends Component
 
         foreach ($config as $key => $value) {
             if (($key === 'BACK_REF' || preg_match('/^[A-Z_]+_URL$/', $key)) && is_array($value)) {
+                $config[$key . '_ROUTE'] = $value;
                 $config[$key] = $this->generateCallbackUrl($value);
             }
         }
