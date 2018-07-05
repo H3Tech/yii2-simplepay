@@ -2,6 +2,7 @@
 
 namespace h3tech\simplePay;
 
+use h3tech\simplePay\sdk\SimpleOneClick;
 use Yii;
 use yii\base\Component;
 use yii\base\InvalidConfigException;
@@ -138,6 +139,11 @@ class SimplePay extends Component
     public function createIrn($currency = '', array $config = null)
     {
         return new SimpleIrn($this->generateConfigArray($config), $currency);
+    }
+
+    public function createOneClick($currency = '', array $currency = null)
+    {
+        return new SimpleOneClick($this->generateConfigArray($config), $currency);
     }
 
     /** @return string|array */
