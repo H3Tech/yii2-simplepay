@@ -141,7 +141,7 @@ class SimplePay extends Component
         return new SimpleIrn($this->generateConfigArray($config), $currency);
     }
 
-    public function createOneClick($currency = '', array $currency = null)
+    public function createOneClick($currency = '', array $config = null)
     {
         return new SimpleOneClick($this->generateConfigArray($config), $currency);
     }
