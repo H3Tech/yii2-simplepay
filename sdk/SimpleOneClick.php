@@ -21,7 +21,7 @@ namespace h3tech\simplePay\sdk;
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  *  2018.07.05.
- *  A namespace has been added to this files to make it possible to autoload the classes.
+ *  A namespace has been added to this file to make it possible to autoload the class.
  *  This was necessary to make it possible to cleanly integrate the SDK into a Yii2 application.
  *
  * @category SDK
