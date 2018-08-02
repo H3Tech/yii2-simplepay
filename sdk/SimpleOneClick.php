@@ -2,6 +2,8 @@
 
 namespace h3tech\simplePay\sdk;
 
+use h3tech\simplePay\exceptions\OneClickException;
+
 /**
  *  Copyright (C) 2016 OTP Mobil Kft.
  *
@@ -24,6 +26,10 @@ namespace h3tech\simplePay\sdk;
  *  A namespace has been added to this file to make it possible to autoload the class.
  *  This was necessary to make it possible to cleanly integrate the SDK into a Yii2 application.
  *
+ *  2018.08.02.
+ *  Some constants have been added to make it easier to handle OneClick result codes.
+ *  The tokenApiCall() function throws an exception if the result code doesn't indicate success.
+ *
  * @category SDK
  * @package  Simple_SDK
  * @author   Simple IT <itsupport@otpmobil.com>
@@ -44,6 +50,31 @@ namespace h3tech\simplePay\sdk;
  */
 class SimpleOneClick extends SimpleTransaction
 {
+    const OPERATION_SUCCESSFUL = 0;
+    const INVALID_METHOD = 400;
+    const TOKEN_EXPIRED = 602;
+    const INVALID_REF_NO = 700;
+    const INSUFFICIENT_FUNDS = 1400;
+    const TOKEN_NOT_FOUND = 1500;
+    const INVALID_EXTERNAL_REF = 1600;
+    const INVALID_AMOUNT = 1800;
+    const INVALID_BILL_LNAME = 2401;
+    const INVALID_BILL_FNAME = 2402;
+    const INVALID_BILL_EMAIL = 2403;
+    const BILL_EMAIL_REQUIRED = 2404;
+    const INVALID_BILL_PHONE = 2405;
+    const INVALID_BILL_ADDRESS = 2406;
+    const INVALID_BILL_CITY = 2407;
+    const INVALID_DELIVERY_LNAME = 2408;
+    const INVALID_DELIVERY_FNAME = 2409;
+    const INVALID_DELIVERY_PHONE = 2410;
+    const INVALID_DELIVERY_ADDRESS = 2411;
+    const INVALID_DELIVERY_CITY = 2412;
+    const INVALID_CURRENCY = 5023;
+    const TOKEN_DISABLED = 5042;
+    const INVALID_TIMESTAMP = 5053;
+    const INVALID_SIGNATURE = 5100;
+
     public $hashData = array();
     public $formData = array();
     public $logger = false;
@@ -140,6 +171,7 @@ class SimpleOneClick extends SimpleTransaction
      *
      * @return array $result Result
      *
+     * @throws OneClickException
      */
     public function tokenApiCall()
     {
@@ -148,6 +180,11 @@ class SimpleOneClick extends SimpleTransaction
 		$result = $this->startRequest($this->tokenUrl, $fields, 'POST');
 		$data = (array) json_decode($result);
 		$this->logFunc("OneClick", $data, $fields['EXTERNAL_REF']);
+
+		if ($data['code'] !== static::OPERATION_SUCCESSFUL) {
+		    throw new OneClickException($data['message'], $data['code']);
+        }
+
         return $data;
     }
 
