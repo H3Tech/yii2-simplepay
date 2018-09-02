@@ -181,7 +181,7 @@ class SimpleOneClick extends SimpleTransaction
 		$data = (array) json_decode($result);
 		$this->logFunc("OneClick", $data, $fields['EXTERNAL_REF']);
 
-		if ($data['code'] !== static::OPERATION_SUCCESSFUL) {
+		if (!is_numeric($data['code']) || intval($data['code']) !== static::OPERATION_SUCCESSFUL) {
 		    throw new OneClickException($data['message'], $data['code']);
         }
 
