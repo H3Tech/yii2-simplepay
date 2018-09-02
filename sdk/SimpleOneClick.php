@@ -28,7 +28,7 @@ use h3tech\simplePay\exceptions\OneClickException;
  *
  *  2018.08.02.
  *  Some constants have been added to make it easier to handle OneClick result codes.
- *  The tokenApiCall() function throws an exception if the result code doesn't indicate success.
+ *  The tokenApiCall() function can optionally throw an exception if the result code doesn't indicate success.
  *
  * @category SDK
  * @package  Simple_SDK
