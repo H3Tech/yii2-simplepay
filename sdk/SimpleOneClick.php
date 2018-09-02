@@ -170,10 +170,8 @@ class SimpleOneClick extends SimpleTransaction
      * Sends notification via cURL
      *
      * @return array $result Result
-     *
-     * @throws OneClickException
      */
-    public function tokenApiCall()
+    public function tokenApiCall($throwException = false)
     {
         $fields = $this->createPostArray("SIGN");
 		$this->logFunc("OneClick", $fields, $fields['EXTERNAL_REF']);
@@ -181,7 +179,7 @@ class SimpleOneClick extends SimpleTransaction
 		$data = (array) json_decode($result);
 		$this->logFunc("OneClick", $data, $fields['EXTERNAL_REF']);
 
-		if (!is_numeric($data['code']) || intval($data['code']) !== static::OPERATION_SUCCESSFUL) {
+		if ($throwException && (!is_numeric($data['code']) || intval($data['code']) !== static::OPERATION_SUCCESSFUL)) {
 		    throw new OneClickException($data['message'], $data['code']);
         }
 
