@@ -14,6 +14,7 @@ use h3tech\simplePay\sdk\SimpleIpn;
 use h3tech\simplePay\sdk\SimpleIdn;
 use h3tech\simplePay\sdk\SimpleIrn;
 
+use yii\console\Application;
 use yii\helpers\Url;
 
 /**
@@ -50,10 +51,12 @@ class SimplePay extends Component
             throw new InvalidConfigException('The options property must be any array');
         }
 
-        foreach ($config as $key => $value) {
-            if (($key === 'BACK_REF' || preg_match('/^[A-Z_]+_URL$/', $key)) && is_array($value)) {
-                $config[$key . '_ROUTE'] = $value;
-                $config[$key] = $this->generateCallbackUrl($value);
+        if (!(Yii::$app instanceof Application)) {
+            foreach ($config as $key => $value) {
+                if (($key === 'BACK_REF' || preg_match('/^[A-Z_]+_URL$/', $key)) && is_array($value)) {
+                    $config[$key . '_ROUTE'] = $value;
+                    $config[$key] = $this->generateCallbackUrl($value);
+                }
             }
         }
 
