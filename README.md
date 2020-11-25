@@ -10,14 +10,14 @@ Add this repository in your composer.json file, like this:
 "repositories": [
     {
         "type": "vcs",
-        "url": "https://github.com/H3Tech/yii2-simplePay"
+        "url": "https://github.com/H3Tech/yii2-simplepay"
     }
 ],
 ```
 ### Adding dependency
 Add an entry for the extension in the require section in your composer.json:
 ```
-"h3tech/yii2-simplePay": "*"
+"h3tech/yii2-simplepay": "*"
 ```
 After this, you can execute `composer update` in your project directory to install the extension.
 
