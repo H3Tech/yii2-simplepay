@@ -1,8 +1,8 @@
 {
-  "name": "h3tech/yii2-simplePay",
+  "name": "h3tech/yii2-simplepay",
   "type": "yii2-extension",
   "description": "An easy to use SimplePay SDK extension for Yii",
-  "homepage": "https://github.com/H3Tech/yii2-simplePay",
+  "homepage": "https://github.com/H3Tech/yii2-simplepay",
   "keywords": [
     "yii2",
     "extension",
