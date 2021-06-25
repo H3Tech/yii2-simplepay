@@ -3,7 +3,6 @@
 namespace h3tech\simplePay;
 
 use yii\base\BootstrapInterface;
-use yii\base\Application;
 
 class Bootstrap implements BootstrapInterface
 {

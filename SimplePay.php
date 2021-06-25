@@ -3,6 +3,9 @@
 namespace h3tech\simplePay;
 
 use h3tech\simplePay\sdk\SimpleOneClick;
+use h3tech\simplePay\sdk\v2\SimplePayBack;
+use h3tech\simplePay\sdk\v2\SimplePayQuery;
+use h3tech\simplePay\sdk\v2\SimplePayStart;
 use Yii;
 use yii\base\Component;
 use yii\base\InvalidConfigException;
@@ -25,11 +28,11 @@ use yii\helpers\Url;
 class SimplePay extends Component
 {
     const SUPPORTED_LANGUAGES = ['CZ', 'DE', 'EN', 'IT', 'HR', 'HU', 'PL', 'RO', 'SK'];
-    const SUPPORTED_PAYMENT_METHODS = ['CCVISAMC', 'WIRE'];
+    const SUPPORTED_PAYMENT_METHODS = ['CARD', 'WIRE'];
 
     protected $sdkConfig;
     protected $defaultPaymentPageLanguage = 'EN';
-    protected $defaultPaymentMethod = 'CCVISAMC';
+    protected $defaultPaymentMethod = 'CARD';
 
     public function getSdkConfig()
     {
@@ -38,7 +41,7 @@ class SimplePay extends Component
 
     public function generateCallbackUrl($routeDefinition)
     {
-        return preg_replace('/^\/{2}/', '', Url::to($routeDefinition, ''));
+        return preg_replace('/^\/{2}/', '', Url::to($routeDefinition, true));
     }
 
     /**
@@ -53,7 +56,7 @@ class SimplePay extends Component
 
         if (!(Yii::$app instanceof Application)) {
             foreach ($config as $key => $value) {
-                if (($key === 'BACK_REF' || preg_match('/^[A-Z_]+_URL$/', $key)) && is_array($value)) {
+                if (($key === 'URL' || preg_match('/^URLS_[A-Z_]+$/', $key)) && is_array($value)) {
                     $config[$key . '_ROUTE'] = $value;
                     $config[$key] = $this->generateCallbackUrl($value);
                 }
@@ -174,5 +177,30 @@ class SimplePay extends Component
     {
         $language = strtoupper($language);
         return in_array($language, static::SUPPORTED_LANGUAGES) ? $language : $this->defaultPaymentPageLanguage;
+    }
+
+    public function createSimplePayStart($currency = '', array $config = null)
+    {
+        $simplePayStart = new SimplePayStart();
+        $simplePayStart->addData('currency', $currency);
+        $simplePayStart->addConfig($this->generateConfigArray($config));
+        return $simplePayStart;
+    }
+
+    public function createSimplePayBack(array $config = null)
+    {
+        $simplePayBack = new SimplePayBack();
+        $simplePayBack->addConfig($this->generateConfigArray($config));
+        return $simplePayBack;
+    }
+
+    public function createSimplePayQuery($merchantId, $transactionId, $orderId, array $config = null)
+    {
+        $simplePayQuery = new SimplePayQuery();
+        $simplePayQuery->addConfig($this->generateConfigArray($config));
+        $simplePayQuery->addMerchantOrderId($orderId);
+        $simplePayQuery->addSimplePayId($transactionId);
+        $simplePayQuery->addConfigData('merchantAccount', $merchantId);
+        return $simplePayQuery;
     }
 }
