@@ -24,5 +24,12 @@
   "minimum-stability": "stable",
   "extra": {
     "bootstrap": "h3tech\\simplePay\\Bootstrap"
+  },
+  "require": {
+    "php": ">=7.0"
+  },
+  "require-dev": {
+    "yidas/yii2-bower-asset": "~2.0",
+    "yiisoft/yii2": "~2.0"
   }
 }
