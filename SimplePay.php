@@ -4,6 +4,7 @@ namespace h3tech\simplePay;
 
 use h3tech\simplePay\sdk\SimpleOneClick;
 use h3tech\simplePay\sdk\v2\SimplePayBack;
+use h3tech\simplePay\sdk\v2\SimplePayIpn;
 use h3tech\simplePay\sdk\v2\SimplePayQuery;
 use h3tech\simplePay\sdk\v2\SimplePayStart;
 use Yii;
@@ -202,5 +203,12 @@ class SimplePay extends Component
         $simplePayQuery->addSimplePayId($transactionId);
         $simplePayQuery->addConfigData('merchantAccount', $merchantId);
         return $simplePayQuery;
+    }
+
+    public function createSimplePayIpn(array $config = null)
+    {
+        $simplePayIpn = new SimplePayIpn();
+        $simplePayIpn->addConfig($this->generateConfigArray($config));
+        return $simplePayIpn;
     }
 }
