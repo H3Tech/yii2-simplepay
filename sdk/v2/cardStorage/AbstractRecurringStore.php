@@ -13,11 +13,8 @@ abstract class AbstractRecurringStore
         $this->transactionBase = $transactionBase;
     }
 
-    public function storeTokens()
+    public function processTokens()
     {
-        if (!isset($this->transaction['tokens']) || count($this->transaction['tokens']) == 0) {
-            return;
-        }
         $this->saveTokens($this->getTokens());
     }
 
@@ -25,19 +22,21 @@ abstract class AbstractRecurringStore
     {
         $tokens = [];
 
-        foreach ($this->transaction['tokens'] as $token) {
-            $tokens[] = [
-                'merchant' => $this->transaction['merchant'],
-                'orderRef' => $this->transaction['orderRef'],
-                'transactionId' => $this->transaction['transactionId'],
-                'tokenRegDate' => @date("c", time()),
-                'customerEmail' => $this->transactionBase['customerEmail'],
-                'token' => $token,
-                'until' => $this->transactionBase['recurring']['until'],
-                'maxAmount' => $this->transactionBase['recurring']['maxAmount'],
-                'currency' => $this->transaction['currency'],
-                'tokenState' => 'stored',
-            ];
+        if (!isset($this->transaction['tokens']) || count($this->transaction['tokens']) == 0) {
+            foreach ($this->transaction['tokens'] as $token) {
+                $tokens[] = [
+                    'merchant' => $this->transaction['merchant'],
+                    'orderRef' => $this->transaction['orderRef'],
+                    'transactionId' => $this->transaction['transactionId'],
+                    'tokenRegDate' => @date("c", time()),
+                    'customerEmail' => $this->transactionBase['customerEmail'],
+                    'token' => $token,
+                    'until' => $this->transactionBase['recurring']['until'],
+                    'maxAmount' => $this->transactionBase['recurring']['maxAmount'],
+                    'currency' => $this->transaction['currency'],
+                    'tokenState' => 'stored',
+                ];
+            }
         }
 
         return $tokens;
