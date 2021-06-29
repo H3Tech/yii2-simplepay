@@ -29,7 +29,8 @@ use yii\helpers\Url;
 class SimplePay extends Component
 {
     const SUPPORTED_LANGUAGES = ['CZ', 'DE', 'EN', 'IT', 'HR', 'HU', 'PL', 'RO', 'SK'];
-    const SUPPORTED_PAYMENT_METHODS = ['CARD', 'WIRE'];
+    const PAYMENT_METHOD_CARD = 'CARD';
+    const PAYMENT_METHOD_WIRE = 'WIRE';
 
     protected $sdkConfig;
     protected $defaultPaymentPageLanguage = 'EN';
@@ -99,14 +100,20 @@ class SimplePay extends Component
         return $this->defaultPaymentMethod;
     }
 
+    public static function supportedPaymentMethods()
+    {
+        return [static::PAYMENT_METHOD_CARD, static::PAYMENT_METHOD_WIRE];
+    }
+
     public function setDefaultPaymentMethod($paymentMethod)
     {
         $paymentMethod = strtoupper($paymentMethod);
 
-        if (!in_array($paymentMethod, static::SUPPORTED_PAYMENT_METHODS)) {
+        $supportedMethods = static::supportedPaymentMethods();
+        if (!in_array($paymentMethod, $supportedMethods)) {
             throw new InvalidConfigException(
                 'The default payment method property must have a valid value from the following: '
-                . join(', ', static::SUPPORTED_PAYMENT_METHODS)
+                . join(', ', $supportedMethods)
             );
         }
 

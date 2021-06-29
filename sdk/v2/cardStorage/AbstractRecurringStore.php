@@ -4,13 +4,13 @@ namespace h3tech\simplePay\sdk\v2\cardStorage;
 
 abstract class AbstractRecurringStore
 {
-    protected $transaction;
     protected $transactionBase;
+    protected $returnData;
 
-    function __construct(array $transaction, array $transactionBase)
+    function __construct(array $transactionBase, array $returnData)
     {
-        $this->transaction = $transaction;
         $this->transactionBase = $transactionBase;
+        $this->returnData = $returnData;
     }
 
     public function processTokens()
@@ -22,18 +22,18 @@ abstract class AbstractRecurringStore
     {
         $tokens = [];
 
-        if (!isset($this->transaction['tokens']) || count($this->transaction['tokens']) == 0) {
-            foreach ($this->transaction['tokens'] as $token) {
+        if (isset($this->returnData['tokens']) || count($this->returnData['tokens']) > 0) {
+            foreach ($this->returnData['tokens'] as $token) {
                 $tokens[] = [
-                    'merchant' => $this->transaction['merchant'],
-                    'orderRef' => $this->transaction['orderRef'],
-                    'transactionId' => $this->transaction['transactionId'],
+                    'merchant' => $this->returnData['merchant'],
+                    'orderRef' => $this->returnData['orderRef'],
+                    'transactionId' => $this->returnData['transactionId'],
                     'tokenRegDate' => @date("c", time()),
                     'customerEmail' => $this->transactionBase['customerEmail'],
                     'token' => $token,
                     'until' => $this->transactionBase['recurring']['until'],
                     'maxAmount' => $this->transactionBase['recurring']['maxAmount'],
-                    'currency' => $this->transaction['currency'],
+                    'currency' => $this->returnData['currency'],
                     'tokenState' => 'stored',
                 ];
             }
@@ -49,5 +49,7 @@ abstract class AbstractRecurringStore
         }
     }
 
-    abstract protected function saveToken(array $token);
+    protected function saveToken(array $token)
+    {
+    }
 }
