@@ -2,7 +2,6 @@
 
 namespace h3tech\simplePay;
 
-use h3tech\simplePay\sdk\SimpleOneClick;
 use h3tech\simplePay\sdk\v2\SimplePayBack;
 use h3tech\simplePay\sdk\v2\SimplePayIpn;
 use h3tech\simplePay\sdk\v2\SimplePayQuery;
@@ -10,13 +9,6 @@ use h3tech\simplePay\sdk\v2\SimplePayStart;
 use Yii;
 use yii\base\Component;
 use yii\base\InvalidConfigException;
-
-use h3tech\simplePay\sdk\SimpleLiveUpdate;
-use h3tech\simplePay\sdk\SimpleBackRef;
-use h3tech\simplePay\sdk\SimpleIos;
-use h3tech\simplePay\sdk\SimpleIpn;
-use h3tech\simplePay\sdk\SimpleIdn;
-use h3tech\simplePay\sdk\SimpleIrn;
 
 use yii\console\Application;
 use yii\helpers\Url;
@@ -132,62 +124,6 @@ class SimplePay extends Component
     protected function generateConfigArray($config = null)
     {
         return is_array($config) ? array_merge($this->sdkConfig, $config) : $this->sdkConfig;
-    }
-
-    public function createLiveUpdate($currency = '', array $config = null)
-    {
-        return new SimpleLiveUpdate($this->generateConfigArray($config), $currency);
-    }
-
-    public function createBackRef($currency = '', array $config = null)
-    {
-        return new SimpleBackRef($this->generateConfigArray($config), $currency);
-    }
-
-    public function createIos($currency = '', $orderNumber = 'N/A', array $config = null)
-    {
-        return new SimpleIos($this->generateConfigArray($config), $currency, $orderNumber);
-    }
-
-    public function createIpn($currency = '', array $config = null)
-    {
-        return new SimpleIpn($this->generateConfigArray($config), $currency);
-    }
-
-    public function createIdn($currency = '', array $config = null)
-    {
-        return new SimpleIdn($this->generateConfigArray($config), $currency);
-    }
-
-    public function createIrn($currency = '', array $config = null)
-    {
-        return new SimpleIrn($this->generateConfigArray($config), $currency);
-    }
-
-    public function createOneClick($currency = '', array $config = null)
-    {
-        return new SimpleOneClick($this->generateConfigArray($config), $currency);
-    }
-
-    /** @return string|array */
-    public function processBackRef(array $parameters = null)
-    {
-        if ($parameters === null) {
-            $parameters = Yii::$app->request->queryParams;
-        }
-
-        $orderCurrency = isset($parameters['order_currency']) ? $parameters['order_currency'] : 'N/A';
-        $backref = $this->createBackRef($orderCurrency);
-        $backref->order_ref = isset($parameters['order_ref']) ? $parameters['order_ref'] : 'N/A';
-
-        if (isset($parameters['err'])) {
-            $result = ['error' => $parameters['err']];
-        } else {
-            $backref->checkResponse();
-            $result = $backref->backStatusArray;
-        }
-
-        return $result;
     }
 
     public function getValidPaymentPageLanguage($language)
