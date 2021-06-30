@@ -31,6 +31,15 @@ class SimplePay extends Component
     const SUPPORTED_LANGUAGES = ['CZ', 'DE', 'EN', 'IT', 'HR', 'HU', 'PL', 'RO', 'SK'];
     const PAYMENT_METHOD_CARD = 'CARD';
     const PAYMENT_METHOD_WIRE = 'WIRE';
+    const FORM_ERROR_VALUE = 'Transaction start was failed!';
+
+    const STATUS_AUTHORIZED = 'AUTHORIZED';
+    const STATUS_FINISHED = 'FINISHED';
+    const STATUS_REFUND = 'REFUND';
+    const STATUS_REVERSED = 'REVERSED';
+    const STATUS_NOT_AUTHORIZED = 'NOTAUTHORIZED';
+    const STATUS_NOT_CANCELLED = 'CANCELLED';
+    const STATUS_NOT_TIMEOUT = 'TIMEOUT';
 
     protected $sdkConfig;
     protected $defaultPaymentPageLanguage = 'EN';
