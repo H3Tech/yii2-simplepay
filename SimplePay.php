@@ -2,6 +2,8 @@
 
 namespace h3tech\simplePay;
 
+use h3tech\simplePay\sdk\v2\cardStorage\SimplePayCardCancel;
+use h3tech\simplePay\sdk\v2\cardStorage\SimplePayDoRecurring;
 use h3tech\simplePay\sdk\v2\SimplePayBack;
 use h3tech\simplePay\sdk\v2\SimplePayIpn;
 use h3tech\simplePay\sdk\v2\SimplePayQuery;
@@ -134,33 +136,47 @@ class SimplePay extends Component
 
     public function createSimplePayStart($currency = '', array $config = null)
     {
-        $simplePayStart = new SimplePayStart();
-        $simplePayStart->addData('currency', $currency);
-        $simplePayStart->addConfig($this->generateConfigArray($config));
-        return $simplePayStart;
+        $start = new SimplePayStart();
+        $start->addData('currency', $currency);
+        $start->addConfig($this->generateConfigArray($config));
+        return $start;
     }
 
     public function createSimplePayBack(array $config = null)
     {
-        $simplePayBack = new SimplePayBack();
-        $simplePayBack->addConfig($this->generateConfigArray($config));
-        return $simplePayBack;
+        $back = new SimplePayBack();
+        $back->addConfig($this->generateConfigArray($config));
+        return $back;
     }
 
     public function createSimplePayQuery($merchantId, $transactionId, $orderId, array $config = null)
     {
-        $simplePayQuery = new SimplePayQuery();
-        $simplePayQuery->addConfig($this->generateConfigArray($config));
-        $simplePayQuery->addMerchantOrderId($orderId);
-        $simplePayQuery->addSimplePayId($transactionId);
-        $simplePayQuery->addConfigData('merchantAccount', $merchantId);
-        return $simplePayQuery;
+        $query = new SimplePayQuery();
+        $query->addConfig($this->generateConfigArray($config));
+        $query->addMerchantOrderId($orderId);
+        $query->addSimplePayId($transactionId);
+        $query->addConfigData('merchantAccount', $merchantId);
+        return $query;
     }
 
     public function createSimplePayIpn(array $config = null)
     {
-        $simplePayIpn = new SimplePayIpn();
-        $simplePayIpn->addConfig($this->generateConfigArray($config));
-        return $simplePayIpn;
+        $ipn = new SimplePayIpn();
+        $ipn->addConfig($this->generateConfigArray($config));
+        return $ipn;
+    }
+
+    public function createSimplePayDoRecurring(array $config = null)
+    {
+        $recurring = new SimplePayDoRecurring();
+        $recurring->addConfig($this->generateConfigArray($config));
+        return $recurring;
+    }
+
+    public function createSimplePayCardCancel(array $config = null)
+    {
+        $cancel = new SimplePayCardCancel();
+        $cancel->addConfig($this->generateConfigArray($config));
+        return $cancel;
     }
 }
