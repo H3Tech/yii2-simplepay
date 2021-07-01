@@ -59,12 +59,10 @@ class SimplePay extends Component
             throw new InvalidConfigException('The options property must be any array');
         }
 
-        if (!(Yii::$app instanceof Application)) {
-            foreach ($config as $key => $value) {
-                if (($key === 'URL' || preg_match('/^URLS_[A-Z_]+$/', $key)) && is_array($value)) {
-                    $config[$key . '_ROUTE'] = $value;
-                    $config[$key] = $this->generateCallbackUrl($value);
-                }
+        foreach ($config as $key => $value) {
+            if (($key === 'URL' || preg_match('/^URLS_[A-Z_]+$/', $key)) && is_array($value)) {
+                $config[$key . '_ROUTE'] = $value;
+                $config[$key] = $this->generateCallbackUrl($value);
             }
         }
 
