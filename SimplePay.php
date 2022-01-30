@@ -12,7 +12,6 @@ use Yii;
 use yii\base\Component;
 use yii\base\InvalidConfigException;
 
-use yii\console\Application;
 use yii\helpers\Url;
 
 /**
@@ -27,13 +26,17 @@ class SimplePay extends Component
     const PAYMENT_METHOD_WIRE = 'WIRE';
     const FORM_ERROR_VALUE = 'Transaction start was failed!';
 
-    const STATUS_AUTHORIZED = 'AUTHORIZED';
-    const STATUS_FINISHED = 'FINISHED';
-    const STATUS_REFUND = 'REFUND';
-    const STATUS_REVERSED = 'REVERSED';
-    const STATUS_NOT_AUTHORIZED = 'NOTAUTHORIZED';
-    const STATUS_NOT_CANCELLED = 'CANCELLED';
+    const STATUS_INIT = 'INIT';
     const STATUS_NOT_TIMEOUT = 'TIMEOUT';
+    const STATUS_NOT_CANCELLED = 'CANCELLED';
+    const STATUS_NOT_AUTHORIZED = 'NOTAUTHORIZED';
+    const STATUS_IN_PAYMENT = 'INPAYMENT';
+    const STATUS_IN_FRAUD = 'INFRAUD';
+    const STATUS_AUTHORIZED = 'AUTHORIZED';
+    const STATUS_FRAUD = 'FRAUD';
+    const STATUS_REVERSED = 'REVERSED';
+    const STATUS_REFUND = 'REFUND';
+    const STATUS_FINISHED = 'FINISHED';
 
     protected $sdkConfig;
     protected $defaultPaymentPageLanguage = 'EN';
